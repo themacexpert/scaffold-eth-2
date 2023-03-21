@@ -18,7 +18,7 @@ export const ContractData = () => {
   const { data: totalCounter } = useScaffoldContractRead({
     contractName: "YourContract",
     functionName: "userGreetingCounter",
-    args: userAddress ? [userAddress] : undefined,
+    args: [userAddress],
   });
 
   // const { data: totalCounter } = useContractRead({
