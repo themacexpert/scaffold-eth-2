@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Marquee from "react-fast-marquee";
+import { useContractRead } from "wagmi";
+import contracts from "~~/generated/hardhat_contracts";
 import { useAnimationConfig, useScaffoldContractRead, useScaffoldEventSubscriber } from "~~/hooks/scaffold-eth";
 
 const MARQUEE_PERIOD_IN_SEC = 5;
@@ -12,10 +14,19 @@ export const ContractData = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const greetingRef = useRef<HTMLDivElement>(null);
 
+  const [userAddress, setUserAddress] = useState<string | undefined>(undefined);
   const { data: totalCounter } = useScaffoldContractRead({
     contractName: "YourContract",
-    functionName: "totalCounter",
+    functionName: "userGreetingCounter",
+    args: userAddress ? [userAddress] : undefined,
   });
+
+  // const { data: totalCounter } = useContractRead({
+  //   abi: contracts[31337][0].contracts.YourContract.abi,
+  //   functionName: "userGreetingCounter",
+  //   args: userAddress ? [userAddress] : undefined,
+  // });
+  console.log("⚡️ ~ file: ContractData.tsx:29 ~ ContractData ~ data:", totalCounter);
 
   const { data: currentGreeting, isLoading: isGreetingLoading } = useScaffoldContractRead({
     contractName: "YourContract",

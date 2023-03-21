@@ -2,12 +2,14 @@ import { useState } from "react";
 import { CopyIcon } from "./assets/CopyIcon";
 import { DiamondIcon } from "./assets/DiamondIcon";
 import { HareIcon } from "./assets/HareIcon";
+import { useContractWrite } from "wagmi";
 import { ArrowSmallRightIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import contracts from "~~/generated/hardhat_contracts";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 export const ContractInteraction = () => {
   const [visible, setVisible] = useState(true);
-  const [newGreeting, setNewGreeting] = useState("");
+  const [newGreeting, setNewGreeting] = useState<string | undefined>(undefined);
 
   const { writeAsync, isLoading } = useScaffoldContractWrite({
     contractName: "YourContract",
@@ -15,6 +17,14 @@ export const ContractInteraction = () => {
     args: [newGreeting],
     value: "0.01",
   });
+
+  // const { writeAsync, isLoading } = useContractWrite({
+  //   mode: "recklesslyUnprepared",
+  //   abi: contracts[31337][0].contracts.YourContract.abi,
+  //   address: contracts[31337][0].contracts.YourContract.address,
+  //   functionName: "setGreeting",
+  //   args: newGreeting ? [newGreetijng] : undefined,
+  // });
 
   return (
     <div className="flex bg-base-300 relative pb-10">
@@ -63,7 +73,11 @@ export const ContractInteraction = () => {
                   className={`btn btn-primary rounded-full capitalize font-normal font-white w-24 flex items-center gap-1 hover:gap-2 transition-all tracking-widest ${
                     isLoading ? "loading" : ""
                   }`}
-                  onClick={writeAsync}
+                  onClick={async () => {
+                    if (writeAsync) {
+                      await writeAsync();
+                    }
+                  }}
                 >
                   {!isLoading && (
                     <>
