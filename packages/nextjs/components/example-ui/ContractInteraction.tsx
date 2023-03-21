@@ -9,8 +9,8 @@ import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 export const ContractInteraction = () => {
   const [visible, setVisible] = useState(true);
-  const [newGreeting, setNewGreeting] = useState<string | undefined>(undefined);
 
+  const [newGreeting, setNewGreeting] = useState<string | undefined>(undefined);
   const { writeAsync, isLoading } = useScaffoldContractWrite({
     contractName: "YourContract",
     functionName: "setGreeting",
