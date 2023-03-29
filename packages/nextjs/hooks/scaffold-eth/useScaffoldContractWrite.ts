@@ -1,9 +1,9 @@
+import { useDeployedContractInfo } from "./useDeployedContractInfo";
 import { utils } from "ethers";
 import { useContractWrite, useNetwork, usePrepareContractWrite } from "wagmi";
 import { getParsedEthersError } from "~~/components/scaffold-eth/Contract/utilsContract";
-import { getTargetNetwork, notification } from "~~/utils/scaffold-eth";
 import { useTransactor } from "~~/hooks/scaffold-eth/useTransactor";
-import { useDeployedContractInfo } from "./useDeployedContractInfo";
+import { getTargetNetwork, notification } from "~~/utils/scaffold-eth";
 
 /**
  * @dev wrapper for wagmi's useContractWrite hook(with config prepared by usePrepareContractWrite hook) which loads in deployed contract abi and address automatically
@@ -18,7 +18,7 @@ export const useScaffoldContractWrite = (contractName: string, functionName: str
   const { chain } = useNetwork();
   const writeTx = useTransactor();
 
-  const { config } = usePrepareContractWrite({
+  const { config, refetch } = usePrepareContractWrite({
     chainId: configuredChain.id,
     address: deployedContractData?.address,
     abi: deployedContractData?.abi,
@@ -60,6 +60,7 @@ export const useScaffoldContractWrite = (contractName: string, functionName: str
 
   return {
     ...wagmiContractWrite,
+    refetch,
     // Overwrite wagmi's write async
     writeAsync: sendContractWriteTx,
   };

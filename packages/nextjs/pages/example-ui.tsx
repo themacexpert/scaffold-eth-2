@@ -1,10 +1,15 @@
-import type { NextPage } from "next";
 import Head from "next/head";
+import type { NextPage } from "next";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 const ExampleUI: NextPage = () => {
-  const { writeAsync, isLoading } = useScaffoldContractWrite("YourContract", "checkin", undefined, "0.01");
-  const { writeAsync: checkoutFunc, isLoading: checkOutLoading } = useScaffoldContractWrite("YourContract", "checkout");
+  const { writeAsync, isLoading } = useScaffoldContractWrite("YourContract", "checkin", undefined, "0.001");
+  const {
+    writeAsync: checkoutFunc,
+    isLoading: checkOutLoading,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    refetch: reConstructPrepare,
+  } = useScaffoldContractWrite("YourContract", "checkout");
   return (
     <>
       <Head>
@@ -15,7 +20,15 @@ const ExampleUI: NextPage = () => {
         <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree&display=swap" rel="stylesheet" />
       </Head>
       <div className=" flex flex-col space-y-4 items-center justify-center flex-grow" data-theme="exampleUi">
-        <button className={`btn btn-primary ${isLoading ? "loading" : ""}`} onClick={async () => await writeAsync()}>
+        <button
+          className={`btn btn-primary ${isLoading ? "loading" : ""}`}
+          onClick={async () => {
+            await writeAsync();
+
+            // UnComment below to make it work
+            // await reConstructPrepare();
+          }}
+        >
           Checkin
         </button>
         <button
