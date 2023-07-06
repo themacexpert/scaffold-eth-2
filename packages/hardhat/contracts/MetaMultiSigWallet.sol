@@ -25,6 +25,19 @@ contract MetaMultiSigWallet {
     uint public nonce;
     uint public chainId;
 
+    constructor(uint256 _chainId, address[] memory _owners, uint _signaturesRequired) {
+        require(_signaturesRequired > 0, "constructor: must be non-zero sigs required");
+        signaturesRequired = _signaturesRequired;
+        for (uint i = 0; i < _owners.length; i++) {
+            address owner = _owners[i];
+            require(owner != address(0), "constructor: zero address");
+            require(!isOwner[owner], "constructor: owner not unique");
+            isOwner[owner] = true;
+            emit Owner(owner, isOwner[owner]);
+        }
+        chainId = _chainId;
+    }
+
     modifier onlySelf() {
         require(msg.sender == address(this), "Not Self");
         _;
