@@ -70,6 +70,14 @@ const config: HardhatUserConfig = {
       url: `https://opt-goerli.g.alchemy.com/v2/${providerApiKey}`,
       accounts: [deployerPrivateKey],
     },
+    moonbeam: {
+      url: `https://moonbeam.public.blastapi.io`,
+      accounts: [deployerPrivateKey],
+    },
+    moonbaseAlpha: {
+      url: `https://moonbase-alpha.public.blastapi.io`,
+      accounts: [deployerPrivateKey],
+    },
     polygon: {
       url: `https://polygon-mainnet.g.alchemy.com/v2/${providerApiKey}`,
       accounts: [deployerPrivateKey],
